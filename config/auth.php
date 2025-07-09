@@ -36,8 +36,15 @@ return [
     */
 
     'guards' => [
+        // Jetstresam
         'web' => [
             'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        // JWT
+        'api' => [
+            'driver' => 'jwt',
             'provider' => 'users',
         ],
     ],

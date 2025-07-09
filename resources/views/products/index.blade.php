@@ -1,13 +1,30 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Daftar Produk') }}
             </h2>
-            <a href="{{ route('products.create') }}"
-               class="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700">
-                + Tambah Produk
-            </a>
+
+            <div class="flex flex-col md:flex-row md:items-center gap-2">
+                <form method="GET" action="{{ route('products.index') }}" class="flex items-center gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        class="border border-gray-300 rounded px-3 py-1 text-sm"
+                        placeholder="Cari produk...">
+                    <button type="submit" class="px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700">
+                        Cari
+                    </button>
+                </form>
+
+                <a href="{{ route('products.create') }}"
+                    class="inline-block px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700">
+                    + Tambah Produk
+                </a>
+
+                <a href="{{ route('products.export') }}"
+                    class="inline-block px-3 py-1 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700">
+                    Export Excel
+                </a>
+            </div>
         </div>
     </x-slot>
 
@@ -143,3 +160,4 @@
         </div>
     </div>
 </x-app-layout>
+@dd($products)

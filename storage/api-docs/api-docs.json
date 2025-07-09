@@ -1,0 +1,516 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Test App API",
+        "description": "Dokumentasi API untuk Test App",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login user dan dapatkan token",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login berhasil"
+                    },
+                    "401": {
+                        "description": "Email atau password salah"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout user",
+                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "responses": {
+                    "200": {
+                        "description": "Logout berhasil"
+                    },
+                    "400": {
+                        "description": "Token tidak valid"
+                    },
+                    "401": {
+                        "description": "Unauthorized (token tidak diberikan atau expired)"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "List semua produk",
+                "operationId": "7cd9d394f726672223f216b77acab086",
+                "responses": {
+                    "200": {
+                        "description": "List produk berhasil diambil"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Membuat produk baru",
+                "operationId": "e83af3dd12f9ebc4ad755304893c016f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "product_name",
+                                    "description",
+                                    "price",
+                                    "start_date",
+                                    "end_date",
+                                    "status",
+                                    "stock"
+                                ],
+                                "properties": {
+                                    "product_name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number"
+                                    },
+                                    "stock": {
+                                        "type": "integer"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Draft",
+                                            "Active",
+                                            "Inactive",
+                                            "Delete"
+                                        ]
+                                    },
+                                    "product_image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Produk berhasil dibuat"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Lihat detail produk",
+                "operationId": "fa07b5c9bbd4d51f1f3763ca56e0908b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail produk ditemukan"
+                    },
+                    "404": {
+                        "description": "Produk tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update produk",
+                "operationId": "e0e4bcc68686fa05279e23580e41bea1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "product_name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number"
+                                    },
+                                    "stock": {
+                                        "type": "integer"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Draft",
+                                            "Active",
+                                            "Inactive",
+                                            "Delete"
+                                        ]
+                                    },
+                                    "product_image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Produk berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Produk tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Hapus produk",
+                "operationId": "bae80a1b7d88ec2b8f025a048aa00f86",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Produk berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Produk tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "[SUPERADMIN + ADMIN] Users"
+                ],
+                "summary": "Menampilkan semua user",
+                "operationId": "862e982d8596a916e4f030cbce92bc53",
+                "responses": {
+                    "200": {
+                        "description": "Daftar user berhasil diambil"
+                    },
+                    "404": {
+                        "description": "Daftar user tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "[SUPERADMIN] Users"
+                ],
+                "summary": "Membuat user baru",
+                "operationId": "29e8316a03b2b47567ccba665fc2b8a7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "user_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Superadmin",
+                                            "Admin"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User berhasil dibuat"
+                    },
+                    "403": {
+                        "description": "Unauthorized (hanya superadmin yang dapat membuat user)"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "put": {
+                "tags": [
+                    "[SUPERADMIN] Users"
+                ],
+                "summary": "Update user",
+                "operationId": "7b1d5722e544300ce266edb80c6cac66",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "user_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Superadmin",
+                                            "Admin"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User berhasil diupdate"
+                    },
+                    "404": {
+                        "description": "User tidak ditemukan"
+                    },
+                    "403": {
+                        "description": "Unauthorized (hanya superadmin yang dapat mengupdate user)"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "[SUPERADMIN] Users"
+                ],
+                "summary": "Hapus user",
+                "operationId": "fe686921a22e8518e2b486057ab1863b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "User tidak ditemukan"
+                    },
+                    "403": {
+                        "description": "Unauthorized (hanya superadmin yang dapat menghapus user)"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Products",
+            "description": "Products"
+        },
+        {
+            "name": "[SUPERADMIN + ADMIN] Users",
+            "description": "[SUPERADMIN + ADMIN] Users"
+        },
+        {
+            "name": "[SUPERADMIN] Users",
+            "description": "[SUPERADMIN] Users"
+        }
+    ]
+}

@@ -10,11 +10,20 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('admin')->where('status', '!=', 'Delete')
-            ->latest()
-            ->paginate(10);
+        $query = Product::with('admin')->where('status', '!=', 'Delete');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('product_name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        $products = $query->latest()->paginate(3)->withQueryString();
+
         return view('products.index', compact('products'));
     }
 
