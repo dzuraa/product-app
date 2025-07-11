@@ -32,9 +32,4 @@ class SendWelcomeEmail implements ShouldQueue
         Log::info('Kirim email ke: ' . $this->user->email);
         Mail::to($this->user->email)->send(new WelcomeEmail($this->user));
     }
-
-    public function failed(\Throwable $exception): void
-{
-    Log::error('SendWelcomeEmail gagal: ' . $exception->getMessage());
-}
 }

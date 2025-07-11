@@ -45,16 +45,19 @@ class AuthController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6',
+            'user_type' => 'required|in:Superadmin,Admin'
         ]);
 
         $user = User::create([
             'name'     => $validated['name'],
             'email'    => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'user_type' => $validated['user_type']
         ]);
 
         // Kirim email sambutan (pakai queue jika ingin)
-        SendWelcomeEmail::dispatch($user);
+        SendWelcomeEmail::dispatch($user)
+            ->onQueue('emails');
 
         // Login otomatis setelah register
         // $token = JWTAuth::fromUser($user);
