@@ -23,13 +23,14 @@ Route::middleware('auth:api')->group(function () {
 });
 
 // API untuk produk
-Route::middleware('auth:api')->group(function () {
-    // Route yang bisa diakses Admin dan Superadmin
-    Route::middleware(['check.user.type.api:Admin,Superadmin'])->group(function () {
-        Route::apiResource(("products"), ProductApiController::class);
-    });
-});
+// Route::middleware('auth:api')->group(function () {
+//     // Route yang bisa diakses Admin dan Superadmin
+//     Route::middleware(['check.user.type.api:Admin,Superadmin'])->group(function () {
+//         Route::apiResource(("products"), ProductApiController::class);
+//     });
+// });
 
 // API Authentication
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);

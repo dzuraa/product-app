@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class ApiResponse
 {
-    public static function success($data = null, $message = 'Success', $code = 200)
+    public static function success($data = null, $message = 'success', $code = 200)
     {
         return response()->json([
             'status' => 'success',
@@ -65,13 +65,16 @@ class ApiResponse
     {
         $userResponse = $user->only(['id', 'name', 'email', 'user_type']);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Login successful',
-            'data' => [
-                'token' => $token,
-                'user' => $userResponse
-            ]
-        ], 200);
+        return self::success([
+            'token' => $token,
+            'user' => $userResponse
+        ], 'Login successful');
+    }
+
+    public static function registerSuccess($user)
+    {
+        $userResponse = $user->only(['id', 'name', 'email', 'user_type']);
+
+        return self::success($userResponse, 'Registration successful');
     }
 }
