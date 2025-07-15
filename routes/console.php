@@ -14,8 +14,6 @@ Schedule::job(new SendDailyProductReminder)
     ->dailyAt('07:00')
     ->timezone('Asia/Jakarta');
 
-Schedule::call(function () {
-    foreach (File::glob(storage_path('logs/*.log')) as $file) {
-        File::delete($file);
-    }
-})->dailyAt('07:00')->timezone('Asia/Jakarta');
+Schedule::command('logs:clear')
+    ->dailyAt('07:00')
+    ->timezone('Asia/Jakarta');
